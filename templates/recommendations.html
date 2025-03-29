@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Your Personalized Exercise Plan</h1>
+    
+    <!-- User Information -->
+    <div class="card bg-dark text-light mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Your Profile</h3>
+            <p><strong>Name:</strong> {{ user.name }}</p>
+            <p><strong>Age:</strong> {{ user.age }}</p>
+            <p><strong>Fitness Level:</strong> {{ user.fitness_level.title() }}</p>
+            <p><strong>Primary Goal:</strong> {{ user.primary_goal.replace('_', ' ').title() }}</p>
+            <p><strong>Disability Type:</strong> {{ user.disability.replace('_', ' ').title() }}</p>
+        </div>
+    </div>
+
+    <!-- Weekly Schedule -->
+    <div class="card bg-dark text-light mb-4">
+        <div class="card-body">
+            <h3 class="card-title mb-4">Weekly Exercise Schedule</h3>
+            <div class="accordion" id="scheduleAccordion">
+                {% for day, exercises in weekly_schedule.items() %}
+                <div class="accordion-item bg-dark">
+                    <h2 class="accordion-header" id="heading{{ loop.index }}">
+                        <button class="accordion-button {% if not loop.first %}collapsed{% endif %} bg-dark text-light" 
+                                type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapse{{ loop.index }}" 
+                                aria-expanded="{{ 'true' if loop.first else 'false' }}" 
+                                aria-controls="collapse{{ loop.index }}">
+                            {{ day }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ loop.index }}" 
+                         class="accordion-collapse collapse {% if loop.first %}show{% endif %}" 
+                         data-bs-parent="#scheduleAccordion">
+                        <div class="accordion-body">
+                            <div class="list-group">
+                                {% for exercise in exercises %}
+                                <div class="list-group-item">
+                                    <div class="exercise-title">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        {{ exercise }}
+                                    </div>
+                                    {% if 'resistance band' in exercise|lower %}
+                                        <div class="exercise-description">
+                                            <ul class="mb-0">
+                                                <li>Stand with feet shoulder-width apart</li>
+                                                <li>Keep core engaged and maintain good posture</li>
+                                                <li>Use controlled movements</li>
+                                            </ul>
+                                        </div>
+                                    {% elif 'back' in user.uncomfortable_areas and 'back' in exercise|lower %}
+                                        <div class="exercise-description">
+                                            <ul class="mb-0">
+                                                <li>Start in a comfortable seated position</li>
+                                                <li>Keep movements slow and controlled</li>
+                                                <li>Focus on proper form</li>
+                                            </ul>
+                                        </div>
+                                    {% elif 'knees' in user.uncomfortable_areas and 'knees' in exercise|lower %}
+                                        <div class="exercise-description">
+                                            <ul class="mb-0">
+                                                <li>Use support when needed</li>
+                                                <li>Keep movements gentle</li>
+                                                <li>Stop if you feel pain</li>
+                                            </ul>
+                                        </div>
+                                    {% elif 'shoulders' in user.uncomfortable_areas and 'shoulders' in exercise|lower %}
+                                        <div class="exercise-description">
+                                            <ul class="mb-0">
+                                                <li>Use light resistance</li>
+                                                <li>Keep movements controlled</li>
+                                                <li>Focus on form</li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="card bg-dark text-light mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Tips for Success</h3>
+            <ul class="list-group">
+                {% for tip in tips %}
+                <li class="list-group-item">
+                    <i class="fas fa-lightbulb me-2 text-warning"></i>
+                    {{ tip }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Safety Guidelines -->
+    <div class="card bg-dark text-light mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Safety Guidelines</h3>
+            <ul class="list-group">
+                {% for guideline in safety_guidelines %}
+                <li class="list-group-item">
+                    <i class="fas fa-shield-alt me-2 text-warning"></i>
+                    {{ guideline }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .accordion-button:not(.collapsed) {
+        background-color: var(--primary-color);
+        color: var(--dark-bg);
+    }
+    
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--primary-color);
+    }
+    
+    .list-group-item {
+        background-color: #000000;
+        border: 1px solid var(--primary-color);
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+    
+    .exercise-title {
+        color: var(--primary-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-family: 'Oswald', sans-serif;
+    }
+    
+    .card {
+        border: 1px solid var(--primary-color);
+        border-radius: 15px;
+    }
+    
+    .card-title {
+        color: var(--primary-color);
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">BE YOUR <span style="color: var(--primary-color);">BEST</span></h1>
+            <p class="lead text-muted">Get personalized exercise recommendations tailored to your needs</p>
+        </div>
+        
+        <div class="card p-4">
+            <h2 class="text-center mb-4">Exercise Recommendation Form</h2>
+            <form method="POST">
+                {{ form.csrf_token }}
+                
+                <div class="mb-3">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control") }}
+                    {% if form.name.errors %}
+                        {% for error in form.name.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ form.age.label(class="form-label") }}
+                            {{ form.age(class="form-control") }}
+                            {% if form.age.errors %}
+                                {% for error in form.age.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ form.weight.label(class="form-label") }}
+                            {{ form.weight(class="form-control") }}
+                            {% if form.weight.errors %}
+                                {% for error in form.weight.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.height.label(class="form-label") }}
+                    {{ form.height(class="form-control") }}
+                    {% if form.height.errors %}
+                        {% for error in form.height.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.disability.label(class="form-label") }}
+                    {{ form.disability(class="form-select") }}
+                    {% if form.disability.errors %}
+                        {% for error in form.disability.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.fitness_level.label(class="form-label") }}
+                    {{ form.fitness_level(class="form-select") }}
+                    {% if form.fitness_level.errors %}
+                        {% for error in form.fitness_level.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    {{ form.primary_goal.label(class="form-label d-block mb-2") }}
+                    <div class="row g-3">
+                        {% for subfield in form.primary_goal %}
+                        <div class="col-6">
+                            <div class="card h-100 goal-card">
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        {{ subfield(class="form-check-input") }}
+                                        {{ subfield.label(class="form-check-label") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if form.primary_goal.errors %}
+                        {% for error in form.primary_goal.errors %}
+                            <div class="text-danger mt-2">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    {{ form.uncomfortable_areas.label(class="form-label") }}
+                    {{ form.uncomfortable_areas(class="form-select", size=6) }}
+                    {% if form.uncomfortable_areas.errors %}
+                        {% for error in form.uncomfortable_areas.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-text text-muted">Hold Ctrl/Cmd to select multiple areas</div>
+                </div>
+
+                <div class="text-center">
+                    {{ form.submit(class="btn btn-primary btn-lg") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.goal-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.goal-card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-check-input:checked ~ .form-check-label {
+    color: var(--primary-color);
+}
+
+.form-check-input:checked + .form-check-label {
+    color: var(--primary-color);
+}
+
+.goal-card:has(.form-check-input:checked) {
+    border-color: var(--primary-color);
+    background-color: rgba(255, 225, 0, 0.1);
+}
+</style>
+{% endblock %} 
